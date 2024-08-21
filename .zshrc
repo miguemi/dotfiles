@@ -5,6 +5,9 @@ alias gs="git status"
 alias cat="bat"
 alias lg="lazygit"
 
+function docker_delete(){
+  docker system prune -af && docker volume prune -af
+}
 
 # exports
 export VISUAL="nvim"
@@ -15,4 +18,5 @@ export PATH=/opt/homebrew/bin:$PATH
 # Evals
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+
 
