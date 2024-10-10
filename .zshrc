@@ -13,10 +13,14 @@ function docker_delete(){
 export VISUAL="nvim"
 export EDITOR="nvim"
 export LC_ALL=en_US.UTF-8
-export PATH=/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+# android
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 # Evals
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-
 
