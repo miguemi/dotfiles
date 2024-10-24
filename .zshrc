@@ -8,6 +8,9 @@ alias lg="lazygit"
 function docker_delete(){
   docker system prune -af && docker volume prune -af
 }
+function laravel_format(){
+  yarn run blade-format && yarn run prettier-format && composer run format
+}
 
 # exports
 export VISUAL="nvim"
