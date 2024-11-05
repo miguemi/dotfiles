@@ -9,7 +9,7 @@ function docker_delete(){
   docker system prune -af && docker volume prune -af
 }
 function laravel_format(){
-  yarn run blade-format && yarn run prettier-format && composer run format
+  pnpm run blade-format && pnpm run prettier-format && composer run format
 }
 
 # exports

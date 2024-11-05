@@ -93,6 +93,11 @@
     enable = true;
   };
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
@@ -101,6 +106,21 @@
       "alan" = {
         hostname = "pruebas.alanfzf.site";
         user = "ubuntu";
+      };
+      "ftp" = {
+        hostname = "ftp.finanssoreal.com";
+        user = "ubuntu";
+        identityFile = "~/.ssh/ed25519_finanssoreal";
+      };
+      "testing" = {
+        hostname = "testing.finanssoreal.com";
+        user = "debian";
+        identityFile = "~/.ssh/ed25519_finanssoreal";
+      };
+      "prod" = {
+        hostname = "control.finanssoreal.com";
+        user = "debian";
+        identityFile = "~/.ssh/ed25519_finanssoreal";
       };
     };
   };
