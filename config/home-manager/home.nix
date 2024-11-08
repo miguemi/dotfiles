@@ -97,7 +97,16 @@
     enable = true;
     enableZshIntegration = true;
   };
-
+  programs.git = {
+  enable = true;
+    userName = "miguemi";
+    userEmail = "manuelmiguel80@hotmail.com";
+    extraConfig = {        # Sign all commits using ssh key
+        commit.gpgsign = true;
+        gpg.format = "ssh";
+        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBtM54FhKHEeypbMPp8S0PEQNzNWMDy82mJa1laSPbS+ manuelmiguel80@hotmail.com";
+      };
+};
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
