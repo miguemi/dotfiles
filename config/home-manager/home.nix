@@ -38,6 +38,7 @@
 
   home.file = {
      ".config/lazygit".source = ../lazygit;
+     ".config/git".source = ../git;
   };
 
   home.sessionVariables = {
