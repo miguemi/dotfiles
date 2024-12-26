@@ -1,6 +1,11 @@
 [user]
 	name = miguemi
 	email = manuelmiguel80@hotmail.com
+  signingkey = ~/.ssh/id_ed25519
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
 [push]
   autoSetupRemote = true
 [alias]
