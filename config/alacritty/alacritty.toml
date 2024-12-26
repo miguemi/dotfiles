@@ -1,0 +1,35 @@
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+size = 16
+
+[window]
+opacity = 0.9
+startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
+
+# Colors (Solarized Dark)
+[colors.primary]
+background = '#002b36'  # Fondo oscuro
+foreground = '#839496'  # Texto claro
+
+# Normal colors
+[colors.normal]
+black   = '#073642'
+red     = '#dc322f'
+green   = '#859900'
+yellow  = '#b58900'
+blue    = '#268bd2'
+magenta = '#d33682'
+cyan    = '#2aa198'
+white   = '#eee8d5'
+
+# Bright colors
+[colors.bright]
+black   = '#002b36'
+red     = '#cb4b16'
+green   = '#586e75'
+yellow  = '#657b83'
+blue    = '#839496'
+magenta = '#6c71c4'
+cyan    = '#93a1a1'
+white   = '#fdf6e3'

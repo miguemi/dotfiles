@@ -1,0 +1,21 @@
+[user]
+	name = miguemi
+	email = manuelmiguel80@hotmail.com
+[push]
+  autoSetupRemote = true
+[alias]
+  gone = ! git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D
+  rmcache = rm -rf --cached .
+[core]
+  editor = nvim
+  autocrlf = false
+[init]
+  defaultBranch = main
+[pull]
+  rebase = false
+[merge]
+	tool = nvimdiff
+[mergetool]
+	keepBackup = false
+[mergetool "nvimdiff"]
+    cmd = nvim "$MERGED"
