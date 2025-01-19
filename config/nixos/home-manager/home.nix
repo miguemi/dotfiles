@@ -54,7 +54,7 @@
     unzip
     lf
     nixfmt-rfc-style
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    nerd-fonts.jetbrains-mono
   ];
 
   home.file = {
@@ -69,6 +69,9 @@
     );
     ".config/lazygit".source = config.lib.file.mkOutOfStoreSymlink (
       config.home.homeDirectory + "/.dotfiles/config/lazygit"
+    );
+    ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/alacritty"
     );
   };
 
