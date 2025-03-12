@@ -55,6 +55,7 @@
     lf
     nixfmt-rfc-style
     nerd-fonts.jetbrains-mono
+    podman
   ];
 
   home.file = {
@@ -122,6 +123,7 @@
         commit.gpgsign = true;
         gpg.format = "ssh";
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBtM54FhKHEeypbMPp8S0PEQNzNWMDy82mJa1laSPbS+ manuelmiguel80@hotmail.com";
+	pull.rebase = true;
       };
       aliases = {
         "subup" = "submodule update --init --recursive";
