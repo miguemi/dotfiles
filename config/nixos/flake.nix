@@ -74,6 +74,7 @@
       # home-manager
       homeConfigurations = {
         "${personalUser}@mb-pro" = homeConfig personalUser aarchSystem aarchPkgs;
+        "migue@miguemi" = homeConfig "migue" system pkgs;
       };
     };
 }
