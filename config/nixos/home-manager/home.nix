@@ -56,6 +56,7 @@
     nixfmt-rfc-style
     nerd-fonts.jetbrains-mono
     podman
+   vscode
   ];
 
   home.file = {
