@@ -1,12 +1,14 @@
+{ pkgs, user, ... }:
 {
   users.users = {
-    "alan" = {
-      # NOTE: don't manage user packages here, use home-manager instead
+    "${user}" = {
       isNormalUser = true;
-      description = "alan";
+      shell = pkgs.zsh;
       extraGroups = [
         "networkmanager"
         "wheel"
+        "docker"
+        "davfs2"
       ];
     };
   };

@@ -5,26 +5,20 @@
   pkgs,
   ...
 }:
+let
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+in
 {
 
   home.username = homeUser;
+  home.stateVersion = "24.11";
   home.homeDirectory = (
-    if pkgs.stdenv.hostPlatform.isLinux then
-      "/home/${config.home.username}"
-    else
-      "/Users/${config.home.username}"
+    if isLinux then "/home/${config.home.username}" else "/Users/${config.home.username}"
   );
 
-  home.stateVersion = "24.11";
-
-  # Handle app symlinks
-  # targets.genericLinux.enable = true;
-  # xdg.mime.enable = true;
-  # xdg.systemDirs.data = [ "${config.home.homeDirectory}/.nix-profile/share/applications" ];
-
   home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
+    EDITOR = "$(which nvim)";
+    VISUAL = "$(which nvim)";
   };
 
   home.shellAliases = {
@@ -33,11 +27,14 @@
     ls = "eza -l --icons -s extension";
     cat = "bat";
     lg = "lazygit";
+    k = "kubectl";
   };
 
   home.packages = with pkgs; [
     awscli2
+    ssm-session-manager-plugin
     bat
+    copilot-language-server
     eza
     fd
     fzf
@@ -45,21 +42,28 @@
     gh
     git
     jq
+    k9s
+    kubectl
+    kubernetes-helm
     lazygit
     lua-language-server
-    marksman
     neovim
+    nerd-fonts.jetbrains-mono
+    nixfmt-rfc-style
     stylua
     tmux
+    tree-sitter
     unzip
-    lf
-    nixfmt-rfc-style
-    nerd-fonts.jetbrains-mono
-    podman
-   vscode
+    zip
   ];
 
   home.file = {
+    ".config/qtile".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/qtile"
+    );
+    ".config/sway".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/sway"
+    );
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink (
       config.home.homeDirectory + "/.dotfiles/config/nvim"
     );
@@ -72,50 +76,118 @@
     ".config/lazygit".source = config.lib.file.mkOutOfStoreSymlink (
       config.home.homeDirectory + "/.dotfiles/config/lazygit"
     );
+
     ".config/alacritty".source = config.lib.file.mkOutOfStoreSymlink (
       config.home.homeDirectory + "/.dotfiles/config/alacritty"
+  };
+    ".config/bat".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/bat"
+    );
+    ".config/lf".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/lf"
+    );
+    ".config/foot".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/foot"
+    );
+    ".config/mako".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/mako"
+    );
+    ".ideavimrc".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/ideavim/ideavimrc"
+    );
+    ".config/swaylock".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/swaylock"
+    );
+    ".config/emacs".source = config.lib.file.mkOutOfStoreSymlink (
+      config.home.homeDirectory + "/.dotfiles/config/emacs"
     );
   };
 
-  programs = {
-    home-manager = {
-      enable = true;
-    };
+  programs.home-manager = {
+    enable = true;
+  };
 
-    bash = {
-      enable = true;
-      enableCompletion = true;
-    };
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+  };
 
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      defaultKeymap = "emacs";
-    };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    defaultKeymap = "emacs";
+    autocd = true;
+    completionInit = ''
+      autoload -Uz compinit && compinit
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+    '';
+  };
 
-    readline = {
-      enable = true;
-      variables = {
-        expand-tilde = true;
-        completion-ignore-case = true;
-        show-all-if-ambiguous = true;
+  programs.readline = {
+    enable = true;
+    variables = {
+      expand-tilde = true;
+      completion-ignore-case = true;
+      show-all-if-ambiguous = true;
+    };
+  };
+
+  programs.zoxide = {
+    enable = true;
+  };
+
+  programs.starship = {
+    enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    silent = true;
+    config = {
+      global = {
+        warn_timeout = "5m";
+      };
+      whitelist = {
+        prefix = [
+          "~/projects"
+          "~/Projects"
+        ];
       };
     };
+  };
 
-    zoxide = {
-      enable = true;
+  programs.ripgrep = {
+    enable = true;
+    arguments = [
+      "--hidden"
+      "--follow"
+      "--glob=!{.git,node_modules,vendor}"
+      "--glob=!*.{lock}"
+      "--glob=!{package-lock.json}"
+      "--max-columns=10000"
+      "--smart-case"
+      "--sort=path"
+    ];
+  };
+
+  programs.keychain = {
+    enable = true;
+    keys = [
+      "id_ed25519"
+    ];
+  };
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      vim_keys = true;
     };
+  };
 
-    starship = {
-      enable = true;
-    };
 
-    direnv = {
-      enable = true;
-      silent = true;
-    };
-
-    git = {
+    programs.git = {
       enable = true;
       userName = "miguemi";
       userEmail = "manuelmiguel80@hotmail.com";
@@ -144,28 +216,7 @@
 
     };
 
-    ripgrep = {
-      enable = true;
-      arguments = [
-        "--hidden"
-        "--follow"
-        "--glob=!{.git,node_modules,vendor}"
-        "--glob=!*.{lock}"
-        "--glob=!{package-lock.json}"
-        "--max-columns=10000"
-        "--smart-case"
-        "--sort=path"
-      ];
-    };
-
-    keychain = {
-      enable = true;
-      keys = [
-        "id_ed25519"
-      ];
-    };
-
-    ssh = {
+    programs.ssh = {
       enable = true;
       addKeysToAgent = "yes";
       forwardAgent = true;
@@ -188,5 +239,4 @@
         };
       };
     };
-  };
 }

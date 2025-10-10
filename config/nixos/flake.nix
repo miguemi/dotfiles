@@ -1,36 +1,51 @@
 {
-  description = "MigueMI's nixos";
+  description = "Miguemi's Nix system";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # darwin
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # wsl
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # neovim overlay
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      home-manager,
       nix-darwin,
+      nixos-wsl,
+      home-manager,
       ...
     }@inputs:
     let
       # users
-      personalUser = "miguemi";
+      user = "miguemi";
+
+      # overlay
+      overlays = [
+        inputs.neovim-nightly-overlay.overlays.default
+      ];
 
       # functions
       importPkgs =
         system:
         import nixpkgs {
-          system = system;
-          config = {
-            allowUnfree = true;
-          };
+          inherit system overlays;
+          config.allowUnfree = true;
         };
 
       homeConfig =
@@ -45,7 +60,7 @@
           };
         };
 
-      # x86 declarations
+      # architecture declaration
       system = "x86_64-linux";
       pkgs = importPkgs system;
 
@@ -54,27 +69,38 @@
 
     in
     {
-      # Native Nix machine
+      # NixOS
       nixosConfigurations = {
-        "nixos" = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [ ./system/configuration.nix ];
+        nixos = nixpkgs.lib.nixosSystem {
+          inherit system pkgs;
+          modules = [ ./nix/configuration.nix ];
+          specialArgs = {
+            inherit inputs user;
+          };
+        };
+
+        wpc = nixpkgs.lib.nixosSystem {
+          inherit system pkgs;
+          modules = [ ./wsl/configuration.nix ];
+          specialArgs = {
+            inherit inputs user;
+          };
         };
       };
 
       # MacOS
       darwinConfigurations = {
         "mb-pro" = nix-darwin.lib.darwinSystem {
-          system = aarchSystem;
+	  system = aarchSystem;
+	  pkgs = aarchPkgs;
           modules = [ ./darwin/darwin.nix ];
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs user; };
         };
       };
 
-      # home-manager
+      # HM
       homeConfigurations = {
-        "${personalUser}@mb-pro" = homeConfig personalUser aarchSystem aarchPkgs;
-        "migue@miguemi" = homeConfig "migue" system pkgs;
+        "${user}" = homeConfig user system pkgs;
       };
     };
 }
