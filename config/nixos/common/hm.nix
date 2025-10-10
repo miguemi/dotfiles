@@ -5,11 +5,9 @@
   user,
   ...
 }:
-
 {
   imports = [
-    # inputs.home-manager.nixosModules.home-manager
-    inputs.home-manager.darwinModules.home-manager
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   home-manager.useGlobalPkgs = true;

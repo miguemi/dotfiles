@@ -1,7 +1,8 @@
+# vi: ft=gitconfig
 [user]
 	name = miguemi
 	email = manuelmiguel80@hotmail.com
-  signingkey = ~/.ssh/id_ed25519
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBtM54FhKHEeypbMPp8S0PEQNzNWMDy82mJa1laSPbS+ manuelmiguel80@hotmail.com
 [commit]
   gpgsign = true
 [gpg]

@@ -19,7 +19,7 @@
   ];
 
   imports = [
-    ../common/hm.nix
+    ../common/hm-darwin.nix
   ];
 
   nix.settings.experimental-features = "nix-command flakes";
