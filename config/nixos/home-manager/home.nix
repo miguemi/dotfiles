@@ -124,7 +124,7 @@
         commit.gpgsign = true;
         gpg.format = "ssh";
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBtM54FhKHEeypbMPp8S0PEQNzNWMDy82mJa1laSPbS+ manuelmiguel80@hotmail.com";
-	pull.rebase = true;
+        pull.rebase = true;
       };
       aliases = {
         "subup" = "submodule update --init --recursive";
@@ -136,11 +136,12 @@
         "amend" = "commit --amend -m";
         "po" = "push origin";
         "cp" = "cherry-pick";
-        "gone" = "! git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D";
+        "gone" =
+          "! git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D";
         "rmcache" = "rm -rf --cached .";
-    
+
       };
-    
+
     };
 
     ripgrep = {
@@ -171,7 +172,7 @@
       serverAliveInterval = 240;
       matchBlocks = {
         "ftp" = {
-          hostname = "ftp.finanssoreal.com";
+          hostname = "office.finanssoreal.com";
           user = "ubuntu";
           identityFile = "~/.ssh/ed25519_finanssoreal";
         };

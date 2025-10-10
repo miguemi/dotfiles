@@ -5,29 +5,29 @@
   inputs,
   ...
 }:
+# aqui se instalan todos los paquetes que tienen interfeza y en homo-manager los que de console por ejemplo k9s
 {
   environment.systemPackages = [
     pkgs.aerospace
     pkgs.jetbrains.datagrip
-    pkgs.aldente
     pkgs.mkalias
     pkgs.qemu
     pkgs.kubectl
-	 pkgs.k9s
-	pkgs.spotify
-   ];
+    pkgs.k9s
+    pkgs.rectangle
+  ];
 
   nix.settings.experimental-features = "nix-command flakes";
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
   system.stateVersion = 5;
   nixpkgs.hostPlatform = "aarch64-darwin";
-  nixpkgs.config.allowUnfree = true; 
+  nixpkgs.config.allowUnfree = true;
   system.keyboard = {
     enableKeyMapping = true;
     remapCapsLockToControl = true;
   };
 
-# fix for spotlight
+  # fix for spotlight
   system.activationScripts.applications.text =
     let
       env = pkgs.buildEnv {
@@ -48,7 +48,7 @@
         ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
       done
     '';
-    
+
   system.defaults = {
     NSGlobalDomain = {
       AppleICUForce24HourTime = true;
